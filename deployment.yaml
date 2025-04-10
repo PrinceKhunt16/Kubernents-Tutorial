@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernents-tutorial-app
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: kubernents-tutorial-app
+  template:
+    metadata:
+      labels:
+        app: kubernents-tutorial-app
+    spec:
+      containers:
+        - name: kubernents-tutorial-app
+          image: kubernents-tutorial-app:latest
+          imagePullPolicy: Never 
+          # image: princekhunt16/kubernents-tutorial-app:latest
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 5001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernents-tutorial-app
+spec:
+  selector:
+    app: kubernents-tutorial-app
+  ports:
+    - port: 8080
+      targetPort: 5001
